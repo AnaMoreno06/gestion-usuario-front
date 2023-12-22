@@ -1,5 +1,7 @@
 
-const urlBasic = "http://localhost:8080"
+const urlBasic = "https://gestion-usuarios-backend-production.up.railway.app"
+//"http://localhost:8080"
+//https://gestion-usuarios-backend-production.up.railway.app/
 
 let user = JSON.parse(localStorage.getItem("usuario"))
 
@@ -11,6 +13,7 @@ if (user.id >= 1) {
 function salirCuenta() {
     localStorage.setItem("usuario", "")
     localStorage.clear()
+    window.location.reload()
     setTimeout(recargar, 50)
 }
 
