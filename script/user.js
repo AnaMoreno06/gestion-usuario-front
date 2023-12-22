@@ -13,37 +13,40 @@ function salirCuenta() {
     localStorage.clear()
     setTimeout(recargar, 50)
 }
-function recargar() {
-    location.reload()
-}
+
 
 
 async function verOpcionesMenu() {
+    //Obtengo el id del rol del usuario
     let rolId = JSON.parse(localStorage.getItem("usuario")).rol.id
 
-console.log(rolId)
-    await fetch(urlBasic+"/rol/"+rolId+"/opcionMenu/lista")
-    .then(res=>res.json())
-    .then(data=>{
-        console.log(data)
-         let body = ``
+    //Realizo la peticion para buscar las opciones del menu
+    await fetch(urlBasic + "/rol/" + rolId + "/opcionMenu/lista")
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            let body = ``
+            //Cargo en la vista
 
             for (let i = 0; i < data.length; i++) {
                 body +=
                     `
-                    <li><a class="dropdown-item" href="${data[i].opcionMenu.url}">${data[i].opcionMenu.icono} ${data[i].opcionMenu.nombre}</a></li>
+                    <li><a class="dropdown-item" href="${data[i].opcionMenu.url}">
+                    <i class="${data[i].opcionMenu.icono}"></i>
+                    
+                     ${data[i].opcionMenu.nombre}</a></li>
              
             `
             }
             document.getElementById('opcionesMenu').innerHTML = body
-    })
-    .catch(err=>{
-        console.log(err)
-    })
+        })
+        .catch(err => {
+            console.log(err)
+        })
 
 }
 
-   
+
 
 function cargarMenu() {
     $("#contenedor").load('menu.html')
@@ -81,6 +84,7 @@ async function login() {
             console.log(data)
             localStorage.setItem("usuario", JSON.stringify(data))
             cargarMenu()
+            verOpcionesMenu()
         })
         .catch(err => {
             Swal.fire({
